@@ -1,43 +1,56 @@
 #!/usr/bin/env -S guile
 !#
 
+(define (make_color_rgb r g b) 
+  (let 
+    ((hex_red (* r 65536 ))
+    (hex_green (* g 256)))
+    (+ hex_red hex_green b)
+  )
+)
 
-(display (- (* 15 4) 12))
-(display "\n")
-(display (+ (/ 100 5) 15))
-(display "\n")
-(display (- (* (+ 8 2) (+ 3 7)) 50) )
-(display "\n")
-(display (/ 3 4))
-(display "\n")
+(newline)
+(display (make_color_rgb 252 186 3))
+(newline)
 
-(define pi 3.14159)
+(define (make_point x y)
+  (cons x y)
+)
 
-(define (circle_area radius) (* pi (* radius radius)))
-(define (perim w h) (* 2 (+ w h)))
-(display (circle_area 6))
-(display "\n")
-(display (perim 4 6))
+(define (move_point point xd yd)
+  (let
+    (
+      (new_x (+ (car point) xd))
+      (new_y (+ (cdr point) yd))
+    )
+    (
+      cons new_x new_y
+    )
+  )
+)
 
-(display "\n\nmax_num\n")
-(define (max_num a b) (if (> a b) a b))
-(display (max_num 14 15))
-(display "\n")
-(display (max_num 15 15))
-(display "\n")
-(display (max_num 16 15))
+(define (print_point point)
+  (begin 
+    (display "x : ")
+    (display (car point))
+    (display " ; y : ")
+    (display (cdr point))
+    (newline)
+  ) 
+)
 
-(display "\n\nclamp\n")
-(define (clamp val min_val max_val) 
-  (cond 
-    ((< val min_val) min_val)
-    ((> val max_val) max_val)
-    (else val)
-  ))
 
-(display (clamp 4 1 5))
-(display "\n")
-(display (clamp 0 1 5))
-(display "\n")
-(display (clamp 6 1 5))
-(display "\n")
+(define (proceed x y)
+  (let
+    (
+      (point (make_point x y))
+    )
+    (print_point point)
+    (display "moving...")
+    (newline)
+    (set! point (move_point point 4 10))
+    (print_point point)
+  )
+)
+
+(proceed 14 2)
