@@ -1,59 +1,112 @@
 #!/usr/bin/env -S guile
 !#
 
-; `() - empty list
+(use-modules (system foreign))
 
-(define (make_point x y)
-  (cons x y)
-)
+(define raylib (dynamic-link "libraylib.so"))
 
-(define (move_point point xd yd)
-  (let
-    (
-      (new_x (+ (car point) xd))
-      (new_y (+ (cdr point) yd))
-    )
-    (
-      cons new_x new_y
-    )
+(define bool int)
+
+; void InitWindow(int width, int height, const char *title)
+(define init_window 
+  (pointer->procedure
+    void
+    (dynamic-func "InitWindow" raylib)
+    (list int int '*)
   )
 )
 
-(define (print_point point)
-  (begin 
-    (display "x : ")
-    (display (car point))
-    (display " ; y : ")
-    (display (cdr point))
+; RLAPI bool WindowShouldClose(void); 
+(define window_should_close 
+  (pointer->procedure
+    bool
+    (dynamic-func "WindowShouldClose" raylib)
+    '()
+  )
+)
+
+; RLAPI void CloseWindow(void);
+(define close_window
+  (pointer->procedure
+    void
+    (dynamic-func "CloseWindow" raylib)
+    '()
+  )
+)
+
+; RLAPI void SetTargetFPS(int fps);
+(define set_target_fps
+  (pointer->procedure
+    void
+    (dynamic-func "SetTargetFPS" raylib)
+    (list int)
+  )
+)
+
+; RLAPI void BeginDrawing(void);
+(define begin_drawing
+  (pointer->procedure
+    void
+    (dynamic-func "BeginDrawing" raylib)
+    '()
+  )
+)
+
+; RLAPI void EndDrawing(void);  
+(define end_drawing
+  (pointer->procedure
+    void
+    (dynamic-func "EndDrawing" raylib)
+    '()
+  )
+)
+
+; - CONSTS
+
+(define fps 60)
+(define screen_width 800)
+(define screen_height 700)
+
+; - FUNCS
+
+; On close
+(define (on_close)
+  (begin
+    (display "Closing the process...")
     (newline)
-  ) 
+    (close_window)
+    (display "Exited!")
+    (newline)
+  )
 )
 
-; ------
+; Render frame
+(define (render_frame)
+    ; Body
+  (begin
+    (begin_drawing)
+    (end_drawing)
+  )
+)
 
-(define (render_points_list history)
-  (if
-    (null? history)
-    (display "All points rendered!\n")
+; Render loop
+(define (start_render_loop)
+  (if (= (window_should_close) 0)
     (begin
-      (print_point (car history))
-      (render_points_list (cdr history))
+      (render_frame)
+      (start_render_loop)
     )
+    (on_close)
+ )
+)
+
+; ENTRY
+(define (main)
+  (begin
+    (init_window screen_width screen_height (string->pointer "PAINT"))
+    (set_target_fps fps)
+    (start_render_loop)
   )
 )
 
-(define (add_point lst point)
-  (cons point lst)
-)
-
-(define simulated_paint_session
-  (let
-    (
-      (history '())
-    )
-    (set! history (add_point history (make_point 10 10)))
-    (set! history (add_point history (make_point 11 12)))
-    (set! history (add_point history (make_point 12 14)))
-    (render_points_list history)
-  )
-)
+(main)
