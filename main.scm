@@ -21,8 +21,10 @@
   )
 )
 
-(define current_tool "stamp")
+; (define current_tool "stamp")
+(define current_tool "brush")
 
+(define brush_tail #f)
 (define stamp_switch #t)
 
 ; Render frame
@@ -51,10 +53,31 @@
               )
             )
           )
+          (
+            (string=? current_tool "brush")
+            (if
+              brush_tail
+              (let
+                (
+                  (blot (make_blot (get_mouse_x) (get_mouse_y) 15.8 (rgba_struct 255 0 0 255)))
+                )
+                (canvas_draw_abstract "stroke" (cons blot brush_tail))
+                (set! brush_tail (cons (blot_get_x blot) (blot_get_y blot)) )
+              )
+              (let
+                (
+                  (blot (make_blot (get_mouse_x) (get_mouse_y) 15.8 (rgba_struct 255 0 0 255)))
+                )
+                (canvas_draw_abstract "blot" blot)
+                (set! brush_tail (cons (blot_get_x blot) (blot_get_y blot)) )
+              )
+            )
+          )
         )
       )
       (else
         (set! stamp_switch #t)
+        (set! brush_tail #f)
       )
     )
     (canvas_render)

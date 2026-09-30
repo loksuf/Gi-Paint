@@ -56,6 +56,10 @@
           (string=? (car (car reverse_queue)) "blot")
           (draw_blot_from_struct (cdr (car reverse_queue)))
         )
+        (
+          (string=? (car (car reverse_queue)) "stroke")
+          (draw_blot_from_struct (car (cdr (car reverse_queue))))
+        )
       )
       (set! reverse_queue (cdr reverse_queue))
       (draw_all_in_queue)
