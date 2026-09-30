@@ -29,10 +29,48 @@
   )
 )
 
+; draw_blot_from_struct
+(define-public
+  (draw_blot_from_struct blot)
+  (draw_circle (blot_get_x blot) (blot_get_y blot) (blot_get_radius blot) (blot_get_rgba blot) )
+)
+
+(define reverse_queue '())
+
+(define
+  (list_push_front lst data)
+  (set! reverse_queue (cons (data lst)))
+)
+
+(define-public
+  (canvas_draw_abstract draw_type data)
+  (list_push_front reverse_queue (cons draw_type data))
+)
+
+(define (draw_all_in_queue)
+  (if
+    (not (null? reverse_queue))
+    (begin
+      (cond
+        (
+          (= (car (car reverse_queue)) "blot")
+          (draw_blot_from_struct (cdr (car reverse_queue)))
+        )
+      )
+      (set! reverse_queue (cdr reverse_queue))
+      (draw_all_in_queue)
+    )
+  )
+)
+
 ; Canvas render
 (define-public
   (canvas_render)
   (begin
+    (begin_texture_mode canvas_render_texture)
+    (draw_all_in_queue)
+    (end_texture_mode)
+
     (draw_texture_pro
       (get_canvas_texture canvas_render_texture)
       (make_c_rectangle 0 0 200 200)

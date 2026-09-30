@@ -21,21 +21,42 @@
   )
 )
 
+(define current_tool "stamp")
+
+(define stamp_switch #t)
+
 ; Render frame
 (define (render_frame)
     ; Body
   (begin
-    (begin_drawing)
+    (begin_drawing) ; PYRAMID OF DOOM :skull: :skull: :skull: :skull: :skull: :skull: 
     (clear_background theme_background)
-    ; (if
-    ;   (= (is_mouse_button_down MOUSE_BUTTON_LEFT) 1)
-    ;   (let
-    ;     (
-    ;       (blot (make_blot (get_mouse_x) (get_mouse_y) 15.8 (rgba_struct 255 0 0 255)))
-    ;     )
-    ;     (capture_blot blot)
-    ;   )
-    ; )
+    (cond
+      (
+        (= (is_mouse_button_down MOUSE_BUTTON_LEFT) 1)
+        (cond
+          (
+            (= current_tool "stamp")
+            (if 
+              stamp_switch
+              (begin
+                (set! stamp_switch #f)
+                 
+                (let
+                  (
+                    (blot (make_blot (get_mouse_x) (get_mouse_y) 15.8 (rgba_struct 255 0 0 255)))
+                  )
+                  (canvas_draw_abstract "blot" blot)
+                )
+              )
+            )
+          )
+        )
+      )
+      (else
+        (set! stamp_switch #t)
+      )
+    )
     (canvas_render)
     (end_drawing)
   )
