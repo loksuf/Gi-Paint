@@ -39,7 +39,7 @@
 
 (define
   (list_push_front lst data)
-  (set! reverse_queue (cons (data lst)))
+  (set! reverse_queue (cons data lst))
 )
 
 (define-public
@@ -53,7 +53,7 @@
     (begin
       (cond
         (
-          (= (car (car reverse_queue)) "blot")
+          (string=? (car (car reverse_queue)) "blot")
           (draw_blot_from_struct (cdr (car reverse_queue)))
         )
       )
@@ -73,8 +73,8 @@
 
     (draw_texture_pro
       (get_canvas_texture canvas_render_texture)
-      (make_c_rectangle 0 0 200 200)
-      (make_c_rectangle 0 0 200 200)
+      (make_c_rectangle 0 0 SCREEN_WIDTH (- SCREEN_HEIGHT))
+      (make_c_rectangle 0 0 SCREEN_WIDTH SCREEN_HEIGHT)
       (make_c_vector2 0 0)
       0.0
       canvas_background
