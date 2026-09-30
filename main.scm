@@ -26,11 +26,31 @@
 
 (define brush_tail #f)
 (define stamp_switch #t)
+(define erase_mode #t)
+
+(define key_e_blocker #f)
 
 ; Render frame
 (define (render_frame)
-    ; Body
+  ; Body
+
+  ; Keyboard interactions handler
   (begin
+    (if
+      (= (is_key_pressed KEY_E) 1)
+      (if
+        (not key_e_blocker)
+        (begin
+          (set! erase_mode (not erase_mode))
+          (set! key_e_blocker #t)
+        )
+      )
+      (set! key_e_blocker #f)
+    )
+  )
+
+  ; Mouse interactions handler
+  (begin 
     (begin_drawing) ; PYRAMID OF DOOM :skull: :skull: :skull: :skull: :skull: :skull: 
     (clear_background theme_background)
     (cond
@@ -80,7 +100,7 @@
         (set! brush_tail #f)
       )
     )
-    (canvas_render)
+    (canvas_render erase_mode)
     (end_drawing)
   )
 )

@@ -94,15 +94,17 @@
 
 ; Canvas render
 (define-public
-  (canvas_render)
+  (canvas_render erase_mode)
   (begin
+    
+    ; Focus to drawing in canvas_texture
     (begin_texture_mode canvas_render_texture)
+    (if erase_mode
+      (begin_blend_mode ERASE_BLEND_MODE)
+    )
     (draw_all_in_queue)
-    (draw_line_ex
-      (make_c_vector2 0 0)
-      (make_c_vector2 50 100)
-      (* 15.8 2)
-      (rgba_struct 255 0 0 255)
+    (if erase_mode
+      (end_blend_mode)
     )
     (end_texture_mode)
 

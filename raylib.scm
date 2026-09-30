@@ -94,6 +94,24 @@
 
 ; DRAW =============
 
+; RLAPI void BeginBlendMode(int mode);
+(define-public begin_blend_mode
+  (pointer->procedure
+    void
+    (dynamic-func "BeginBlendMode" raylib_so)
+    (list int)
+  )
+)
+
+; RLAPI void EndBlendMode(void);
+(define-public end_blend_mode
+  (pointer->procedure
+    void
+    (dynamic-func "EndBlendMode" raylib_so)
+    '()
+  )
+)
+
 ; RLAPI void DrawLineEx(Vector2 startPos, Vector2 endPos, float thick, Color color);
 (define-public draw_line_ex
   (pointer->procedure
@@ -139,7 +157,9 @@
   )
 )
 
-; MOUSE =============
+; CONTROLS =============
+
+; Mouse
 
 ; RLAPI bool IsMouseButtonDown(int button);
 (define-public is_mouse_button_down
@@ -165,6 +185,17 @@
     int
     (dynamic-func "GetMouseY" raylib_so)
     '()
+  )
+)
+
+; Keyboard
+
+;RLAPI bool IsKeyPressed(int key);
+(define-public is_key_pressed
+  (pointer->procedure
+    bool
+    (dynamic-func "IsKeyPressed" raylib_so)
+    (list int) ; (check KeyboardKey in raylib.h)
   )
 )
 
