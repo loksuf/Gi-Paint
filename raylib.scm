@@ -204,3 +204,12 @@
   (string->pointer str "UTF-8")
 )
 
+(define-public
+  (get_canvas_texture canvas_render_texture)
+  (make-c-struct
+    c_texture2d
+    (cadr 
+      (parse-c-struct canvas_render_texture c_render_texture2d)
+    )
+  )
+)

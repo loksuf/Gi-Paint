@@ -18,6 +18,9 @@
 
 ; CONSTS
 
+(define-public canvas_background (rgba_struct 131 111 125 255))
+
 ; Theme
 
 (define-public theme_background (rgba_struct 46 44 45 255))
+

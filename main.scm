@@ -36,6 +36,7 @@
     ;     (capture_blot blot)
     ;   )
     ; )
+    (canvas_render)
     (end_drawing)
   )
 )
