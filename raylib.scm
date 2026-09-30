@@ -3,7 +3,7 @@
   #:use-module (system foreign)
 )
 
-(define bool int)
+(define bool uint8)
 
 (define raylib_so (dynamic-link "libraylib.so"))
 
@@ -43,6 +43,8 @@
   )
 )
 
+; DRAW =============
+
 ; RLAPI void BeginDrawing(void);
 (define-public begin_drawing
   (pointer->procedure
@@ -67,6 +69,44 @@
     void
     (dynamic-func "ClearBackground" raylib_so)
     (list uint32)
+  )
+)
+
+; RLAPI void DrawCircle(int centerX, int centerY, float radius, Color color);
+(define-public draw_circle
+  (pointer->procedure
+    void
+    (dynamic-func "DrawCircle" raylib_so)
+    (list int int float uint32)
+  )
+)
+
+; MOUSE =============
+
+; RLAPI bool IsMouseButtonDown(int button);
+(define-public is_mouse_button_down
+  (pointer->procedure
+    bool
+    (dynamic-func "IsMouseButtonDown" raylib_so)
+    (list int)
+  )
+)
+
+; RLAPI int GetMouseX(void);
+(define-public get_mouse_x
+  (pointer->procedure
+    int
+    (dynamic-func "GetMouseX" raylib_so)
+    '()
+  )
+)
+
+; RLAPI int GetMouseY(void);
+(define-public get_mouse_y
+  (pointer->procedure
+    int
+    (dynamic-func "GetMouseY" raylib_so)
+    '()
   )
 )
 
