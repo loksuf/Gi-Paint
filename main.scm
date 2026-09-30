@@ -2,9 +2,9 @@
 !#
 
 (add-to-load-path (dirname (current-filename)))
-(use-modules (system foreign))
 (use-modules (raylib))
 (use-modules (consts))
+(use-modules (colors))
 
 ; - FUNCS
 
@@ -24,6 +24,7 @@
     ; Body
   (begin
     (begin_drawing)
+    (clear_background theme_background)
     (end_drawing)
   )
 )

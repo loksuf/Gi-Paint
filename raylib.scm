@@ -61,6 +61,15 @@
   )
 )
 
+; RLAPI void ClearBackground(Color color);
+(define-public clear_background
+  (pointer->procedure
+    void
+    (dynamic-func "ClearBackground" raylib_so)
+    (list uint32)
+  )
+)
+
 ; Utils ====
 
 (define-public
