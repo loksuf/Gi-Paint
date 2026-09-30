@@ -175,7 +175,7 @@
   (pointer->procedure
     void
     (dynamic-func "BeginTextureMode" raylib_so)
-    '(*)
+    (c_render_texture2d)
   )
 )
 
