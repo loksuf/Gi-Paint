@@ -1,11 +1,59 @@
 (define-module
   (raylib) ; Module name
   #:use-module (system foreign)
+  #:use-module (rnrs bytevectors)
 )
 
 (define bool uint8)
 
 (define raylib_so (dynamic-link "libraylib.so"))
+
+; STRUCTS
+
+(define c_color uint32)
+(define c_vector2 (list float float))
+(define c_rectangle (list float float float float))
+(define c_texture2d (list uint32 int int int int))
+
+; FACTORY FUNCTIONS For C Structs
+
+; Make c_vector2
+(define-public
+  (make_c_vector2 x y)
+  (make-c-struct c_vector2
+    (list
+      (exact->inexact x)
+      (exact->inexact y)
+    )
+  )
+)
+; Make c_rectangle
+(define-public
+  (make_c_rectangle x y width height)
+  (make-c-struct c_rectangle
+    (list
+      (exact->inexact x)
+      (exact->inexact y)
+      (exact->inexact width)
+      (exact->inexact height)
+    )
+  )
+)
+; Make c_texture2d
+(define-public
+  (make_c_texture2d id width height mipmaps format)
+  (make-c-struct c_texture2d
+    (list
+      id 
+      width 
+      height 
+      mipmaps 
+      format
+    )
+  )
+)
+
+; FUNCTIONS ================
 
 ; void InitWindow(int width, int height, const char *title)
 (define-public init_window 
@@ -77,7 +125,7 @@
   (pointer->procedure
     void
     (dynamic-func "DrawCircle" raylib_so)
-    (list int int float uint32)
+    (list int int float c_color)
   )
 )
 
@@ -107,6 +155,44 @@
     int
     (dynamic-func "GetMouseY" raylib_so)
     '()
+  )
+)
+
+; TEXTURE ============
+
+; RLAPI RenderTexture2D LoadRenderTexture(int width, int height); 
+(define-public load_render_texture
+  (pointer->procedure
+    c_texture2d
+    (dynamic-func "LoadRenderTexture" raylib_so)
+    (list int int)
+  )
+)
+
+; RLAPI void BeginTextureMode(RenderTexture2D target);
+(define-public begin_texture_mode
+  (pointer->procedure
+    void
+    (dynamic-func "BeginTextureMode" raylib_so)
+    '(*)
+  )
+)
+
+; RLAPI void EndTextureMode(void);
+(define-public end_texture_mode
+  (pointer->procedure
+    void
+    (dynamic-func "EndTextureMode" raylib_so)
+    '()
+  )
+)
+
+; RLAPI void DrawTexturePro(Texture2D texture, Rectangle srcrec, Rectangle dstrec, Vector2 origin, float rotation, Color tint);
+(define-public draw_texture_pro
+  (pointer->procedure
+    void
+    (dynamic-func "DrawTexturePro" raylib_so)
+    (list c_texture2d c_rectangle c_rectangle c_vector2 float c_color)
   )
 )
 

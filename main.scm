@@ -27,16 +27,15 @@
   (begin
     (begin_drawing)
     (clear_background theme_background)
-    (if
-      (= (is_mouse_button_down MOUSE_BUTTON_LEFT) 1)
-      (let
-        (
-          (blot (make_blot (get_mouse_x) (get_mouse_y) 15.8 (rgba_struct 255 0 0 255)))
-        )
-        (capture_blot blot)
-      )
-    )
-    (canvas_render canvas_storage)
+    ; (if
+    ;   (= (is_mouse_button_down MOUSE_BUTTON_LEFT) 1)
+    ;   (let
+    ;     (
+    ;       (blot (make_blot (get_mouse_x) (get_mouse_y) 15.8 (rgba_struct 255 0 0 255)))
+    ;     )
+    ;     (capture_blot blot)
+    ;   )
+    ; )
     (end_drawing)
   )
 )
@@ -55,15 +54,17 @@
 ; ENTRY
 (define (main)
   (begin
-    (let
-      (
-        (blot (make_blot (get_mouse_x) (get_mouse_y) 15.8 (rgba_struct 255 0 0 255)))
-      )
-      (display (blot_get_x blot))
-    )
     (init_window SCREEN_WIDTH SCREEN_HEIGHT (c_str "PAINT"))
     (set_target_fps FPS)
-    (start_render_loop)
+    (display "CATCAT")
+    (let
+      (
+        (target_texture 
+          (load_render_texture SCREEN_WIDTH SCREEN_HEIGHT)
+        )
+      )
+      (start_render_loop)
+    )
   )
 )
 
