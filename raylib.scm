@@ -117,7 +117,7 @@
   (pointer->procedure
     void
     (dynamic-func "ClearBackground" raylib_so)
-    (list uint32)
+    (list c_color)
   )
 )
 
