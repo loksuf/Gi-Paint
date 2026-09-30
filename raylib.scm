@@ -94,6 +94,15 @@
 
 ; DRAW =============
 
+; RLAPI void DrawLineEx(Vector2 startPos, Vector2 endPos, float thick, Color color);
+(define-public draw_line_ex
+  (pointer->procedure
+    void
+    (dynamic-func "DrawLineEx" raylib_so)
+    (list c_vector2 c_vector2 float c_color)
+  )
+)
+
 ; RLAPI void BeginDrawing(void);
 (define-public begin_drawing
   (pointer->procedure
