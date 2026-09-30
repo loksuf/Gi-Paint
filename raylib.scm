@@ -14,6 +14,7 @@
 (define c_vector2 (list float float))
 (define c_rectangle (list float float float float))
 (define c_texture2d (list uint32 int int int int))
+(define c_render_texture2d (list uint32 c_texture2d c_texture2d))
 
 ; FACTORY FUNCTIONS For C Structs
 
@@ -163,7 +164,7 @@
 ; RLAPI RenderTexture2D LoadRenderTexture(int width, int height); 
 (define-public load_render_texture
   (pointer->procedure
-    c_texture2d
+    c_render_texture2d
     (dynamic-func "LoadRenderTexture" raylib_so)
     (list int int)
   )

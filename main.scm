@@ -59,7 +59,7 @@
     (display "CATCAT")
     (let
       (
-        (target_texture 
+        (canvas_texture
           (load_render_texture SCREEN_WIDTH SCREEN_HEIGHT)
         )
       )
