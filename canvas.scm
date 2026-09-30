@@ -29,6 +29,9 @@
   )
 )
 
+; ===== PAINT CONTROLS DATA
+
+
 ; ===== CANVAS PRIMITIVES
 
 ; draw_blot_from_struct
@@ -82,6 +85,26 @@
             )
             (draw_blot_from_struct
               (car (cdr (car reverse_queue)))
+            )
+          )
+        )
+        (
+          (string=? (car (car reverse_queue)) "fill")
+          (let
+            (
+              (image 
+                (load_image_from_texture 
+                  (get_canvas_texture canvas_render_texture)
+                )
+              )
+            )
+            (let
+              (
+                (color
+                  (get_image_color image 1 1)
+                )
+              )
+              (display 123)
             )
           )
         )

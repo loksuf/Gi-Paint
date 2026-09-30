@@ -22,7 +22,8 @@
 )
 
 ; (define current_tool "stamp")
-(define current_tool "brush")
+; (define current_tool "brush")
+(define current_tool "fill")
 
 (define brush_tail #f)
 (define stamp_switch #t)
@@ -92,6 +93,10 @@
                 (set! brush_tail (cons (blot_get_x blot) (blot_get_y blot)) )
               )
             )
+          )
+          (
+            (string=? current_tool "fill")
+            (canvas_draw_abstract "fill" (cons (get_mouse_x) (get_mouse_y) ) )
           )
         )
       )

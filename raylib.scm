@@ -15,6 +15,14 @@
 (define c_rectangle (list float float float float))
 (define c_texture2d (list uint32 int int int int))
 (define c_render_texture2d (list uint32 c_texture2d c_texture2d))
+; typedef struct Image {
+;     void *data;             // Image raw data
+;     int width;              // Image base width
+;     int height;             // Image base height
+;     int mipmaps;            // Mipmap levels, 1 by default
+;     int format;             // Data format (PixelFormat type)
+; } Image;
+(define c_image (list '* int int int int))
 
 ; FACTORY FUNCTIONS For C Structs
 
@@ -49,6 +57,20 @@
       width 
       height 
       mipmaps 
+      format
+    )
+  )
+)
+
+; Make c_image
+(define-public
+  (make_c_image data_ptr width height mipmaps format)
+  (make-c-struct c_image
+    (list
+      data_ptr
+      width
+      height 
+      mipmaps
       format
     )
   )
@@ -234,6 +256,26 @@
     void
     (dynamic-func "DrawTexturePro" raylib_so)
     (list c_texture2d c_rectangle c_rectangle c_vector2 float c_color)
+  )
+)
+
+; IMAGE ========
+
+; RLAPI Image LoadImageFromTexture(Texture2D texture);
+(define-public load_image_from_texture
+  (pointer->procedure
+    c_image
+    (dynamic-func "LoadImageFromTexture" raylib_so)
+    (list c_texture2d)
+  )
+)
+
+; RLAPI Color GetImageColor(Image image, int x, int y);
+(define-public get_image_color
+  (pointer->procedure
+    c_color
+    (dynamic-func "GetImageColor" raylib_so)
+    (list c_image int int)
   )
 )
 
