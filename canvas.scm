@@ -5,30 +5,22 @@
 (add-to-load-path (dirname (current-filename)))
 (use-modules (primitives))
 (use-modules (raylib))
+(use-modules (consts))
 
-(define-public canvas_storage '())
+; global canvas_texture
+; typedef struct RenderTexture {
+;     unsigned int id;
+;     Texture2D texture;
+;     Texture2D depth;
+; } RenderTexture2D;
+(define canvas_texture #f)
 
-; draw_blot_from_struct
+; Canvas loader
 (define-public
-  (draw_blot_from_struct blot)
-  (draw_circle (blot_get_x blot) (blot_get_y blot) (blot_get_radius blot) (blot_get_rgba blot) )
-)
-
-; Rendering the entire canvas_storage
-(define-public
-  (canvas_render canvas_storage_list)
-  (if
-    (not (null? canvas_storage_list))
-    (begin
-      (draw_blot_from_struct (car canvas_storage_list))
-      (canvas_render (cdr canvas_storage_list))
-    )
-  )
-)
-
-; Capture blot
-(define-public (capture_blot blot)
+  (canvas_load)
   (begin
-    (set! canvas_storage (cons blot canvas_storage))
+    (set! canvas_texture
+      (load_render_texture SCREEN_WIDTH SCREEN_HEIGHT)
+    )
   )
 )

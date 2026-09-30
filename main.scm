@@ -56,15 +56,8 @@
   (begin
     (init_window SCREEN_WIDTH SCREEN_HEIGHT (c_str "PAINT"))
     (set_target_fps FPS)
-    (display "CATCAT")
-    (let
-      (
-        (canvas_texture
-          (load_render_texture SCREEN_WIDTH SCREEN_HEIGHT)
-        )
-      )
-      (start_render_loop)
-    )
+    (canvas_load)
+    (start_render_loop)
   )
 )
 
