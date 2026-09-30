@@ -36,7 +36,7 @@
         (= (is_mouse_button_down MOUSE_BUTTON_LEFT) 1)
         (cond
           (
-            (= current_tool "stamp")
+            (string=? current_tool "stamp")
             (if 
               stamp_switch
               (begin
