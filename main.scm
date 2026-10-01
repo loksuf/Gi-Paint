@@ -22,7 +22,7 @@
   )
 )
 
-(define erase_mode #t)
+(define erase_mode #f)
 
 (define key_e_blocker #f)
 

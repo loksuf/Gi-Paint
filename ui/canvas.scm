@@ -40,9 +40,9 @@
 (define canvas_height (- SCREEN_HEIGHT 100))
 (define drawing_tool_radius 10.0)
 
-(define current_tool "stamp")
+; (define current_tool "stamp")
 ; (define current_tool "brush")
-; (define current_tool "fill")
+(define current_tool "fill")
 
 ; Area callback
 (define-public
@@ -60,21 +60,22 @@
 )
 
 (define blocked_repeat_interact #f)
+(define brush_tail #f)
 
 ; Interact callback
 (define-public
   (canvas_interact_callback hit_pos interaction_type interaction_data)
   (let*
     (
-      (relative_hit_pos
-        (cons 
-          (- (car hit_pos) canvas_pos_x)
-          (+ (cdr hit_pos) canvas_pos_y)
-        )
-      )
-      (rel_hit_pos_x (car relative_hit_pos))
-      (rel_hit_pos_y (cdr relative_hit_pos))
-    )
+     (relative_hit_pos
+       (cons 
+         (- (car hit_pos) canvas_pos_x)
+         (+ (cdr hit_pos) canvas_pos_y)
+         )
+       )
+     (rel_hit_pos_x (car relative_hit_pos))
+     (rel_hit_pos_y (cdr relative_hit_pos))
+     )
     (if
       (string=? interaction_type "mouse")
       (let
@@ -83,34 +84,59 @@
          )
         (cond
           (
-            (= mouse_button_code MOUSE_BUTTON_LEFT)
-            (cond
-              (
-                (string=? current_tool "stamp")
-                (if
-                  (not blocked_repeat_interact)
-                  (let
-                    (
-                      (blot (make_blot rel_hit_pos_x rel_hit_pos_y drawing_tool_radius current_color))
-                    )
-                    (canvas_draw_abstract "blot" blot)
-                    (set! blocked_repeat_interact #t)
+           (= mouse_button_code MOUSE_BUTTON_LEFT)
+           (cond
+             (
+              (string=? current_tool "stamp")
+              (if
+                (not blocked_repeat_interact)
+                (let
+                  (
+                   (blot (make_blot rel_hit_pos_x rel_hit_pos_y drawing_tool_radius current_color))
+                   )
+                  (canvas_draw_abstract "blot" blot)
+                  (set! blocked_repeat_interact #t)
                   )
                 )
               )
-            )
+             (
+              (string=? current_tool "brush")
+              (if
+                brush_tail
+                (let
+                  (
+                   (blot (make_blot rel_hit_pos_x rel_hit_pos_y drawing_tool_radius current_color))
+                   )
+                  (canvas_draw_abstract "stroke" (cons blot brush_tail))
+                  (set! brush_tail (cons (blot_get_x blot) (blot_get_y blot)) )
+                  )
+                (let
+                  (
+                   (blot (make_blot rel_hit_pos_x rel_hit_pos_y drawing_tool_radius current_color))
+                   )
+                  (canvas_draw_abstract "blot" blot)
+                  (set! brush_tail (cons (blot_get_x blot) (blot_get_y blot)) )
+                  )
+                )
+              )
+             (
+              (string=? current_tool "fill")
+              (canvas_draw_abstract "fill" (cons rel_hit_pos_x rel_hit_pos_y ) )
+              )
+             )
            )
           (
            (= mouse_button_code MOUSE_BUTTON_NONE)
            (begin
              (set! blocked_repeat_interact #f)
+             (set! brush_tail #f)
              )
+           )
           )
         )
       )
     )
   )
-)
 
 ; ===== CANVAS PRIMITIVES
 
