@@ -25,5 +25,6 @@
 (define-public theme_background (rgba_struct 68 67 68 255))
 (define-public THEME_TOOLBAR_BG (rgba_struct 58 58 58 255))
 (define-public THEME_SHADOW (rgba_struct 63 63 63 255))
-(define-public THEME_SEL_ICON_BG (rgba_struct 70 70 70 255))
+(define-public THEME_SEL_ICON_BG (rgba_struct 100 100 100 255))
+(define-public THEME_ICON_BG (rgba_struct 70 70 70 255))
 
