@@ -9,6 +9,7 @@
 (use-modules (ui canvas))
 (use-modules (ui ui_core))
 (use-modules (ui toolbar))
+(use-modules (ui erase_mode_bridge))
 
 ; - FUNCS
 
@@ -22,8 +23,6 @@
     (newline)
   )
 )
-
-(define erase_mode #f)
 
 (define key_e_blocker #f)
 (define key_f_blocker #f)
@@ -41,7 +40,7 @@
       (if
         (not key_e_blocker)
         (begin
-          (set! erase_mode (not erase_mode))
+          (set_erase_mode (not (get_erase_mode)))
           (set! key_e_blocker #t)
         )
       )
@@ -123,9 +122,14 @@
             "mouse"
             (list MOUSE_BUTTON_NONE)
           )
+          (panels_ui_ghost_interact
+            "toolbar"
+            "mouse"
+            (list MOUSE_BUTTON_NONE)
+          )
         )
       )
-      (canvas_render erase_mode)
+      (canvas_render (get_erase_mode))
       (toolbar_render)
       (end_drawing)
     )

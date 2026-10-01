@@ -33,3 +33,5 @@
 (define-public ICON_BRUSH_PATH (string-append BASE_DIR "/res/brush.png"))
 (define-public ICON_STAMP_PATH (string-append BASE_DIR "/res/stamp.png"))
 (define-public ICON_FILL_PATH (string-append BASE_DIR "/res/fill.png"))
+(define-public ICON_ERASE_MODE_PATH (string-append BASE_DIR "/res/erase_mode.png"))
+
