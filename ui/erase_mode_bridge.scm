@@ -2,7 +2,7 @@
   (ui erase_mode_bridge) ; Module name
 )
 
-; This file is only needed to pass the erase_mode state to the toolbar. Yeah, it's cringe, but I've only got two hours left... (-‸-)
+; This file is only needed to pass the erase_mode state to the toolbar. Yeah, it's cringe... (-‸-)
 
 (define erase_mode #f)
 
