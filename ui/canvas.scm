@@ -44,6 +44,18 @@
 
 (define current_tool "brush")
 
+; Set current_color
+(define-public
+  (set_current_color rgba)
+  (set! current_color rgba)
+)
+
+; Get current_color
+(define-public
+  (get_current_color)
+  current_color
+)
+
 ; Change current_tool
 (define-public
   (change_current_tool new_tool_name)
@@ -331,7 +343,7 @@
       (make_c_rectangle canvas_pos_x canvas_pos_y canvas_width canvas_height)
       (make_c_vector2 0 0)
       0.0
-      canvas_background
+      (rgba_struct 255 255 255 255)
     )
   )
 )

@@ -20,8 +20,8 @@
 (define fill_icon_tex #f)
 
 (define ICON_SRCWH 64)
-(define ICON_WH (* TOOLBAR_WIDTH 0.65))
-(define ICON_PADDING (* 0.5 (- TOOLBAR_WIDTH ICON_WH)))
+(define ICON_WH (inexact->exact (round (* TOOLBAR_WIDTH 0.65))))
+(define ICON_PADDING (inexact->exact (round (* 0.5 (- TOOLBAR_WIDTH ICON_WH)))))
 (define ICON_BG_PADDING (inexact->exact (round (* ICON_PADDING 0.5))))
 (define ICON_BG_WH (inexact->exact (+ ICON_BG_PADDING ICON_WH)))
 
@@ -48,6 +48,22 @@
   )
 )
 
+(define (render_color_button color index selected)
+  (begin
+    (let
+      (
+        (icon_bg_color THEME_SEL_ICON_BG)
+      )
+      (if
+        (not selected)
+        (set! icon_bg_color THEME_ICON_BG)
+      )
+      (draw_rectangle ICON_BG_PADDING (+ ICON_BG_PADDING (* (+ ICON_BG_PADDING ICON_BG_PADDING ICON_BG_WH) index)) ICON_BG_WH ICON_BG_WH icon_bg_color)
+      (draw_rectangle ICON_PADDING (+ (+ ICON_BG_PADDING (* (+ ICON_BG_PADDING ICON_BG_PADDING ICON_BG_WH) index)) 2) ICON_WH ICON_WH color)
+    )
+  )
+)
+
 ; Interaction callback factory for buttons
 (define (make_inter_callback real_callback)
   (lambda (hit_pos inter_type inter_data)
@@ -64,13 +80,13 @@
         (x0 0)
         (y0 hell_y)
         (x3 TOOLBAR_WIDTH)
-        (y3 (+ (+ ICON_BG_PADDING (* (+ ICON_BG_PADDING ICON_BG_PADDING ICON_BG_WH) (+ index 1))) 2))
+        (y3 (+ (+ ICON_BG_PADDING (* (+ ICON_BG_PADDING ICON_BG_PADDING ICON_BG_WH) (+ index 1))) 2)) ; It’s terrible, it’s ugly, 
+                                                                                                      ; but it works, and I don’t want to know how (╥﹏╥)
       )
       (list (cons x0 y0) (cons x3 y3))
     )
   )
 )
-
 
 ; Area callback
 (define-public
@@ -103,6 +119,18 @@
     (tuc_push_front (list "stamp" (make_area_callback 0) (make_inter_callback (lambda () (change_current_tool "stamp") )) ))
     (tuc_push_front (list "brush" (make_area_callback 1) (make_inter_callback (lambda () (change_current_tool "brush") )) ))
     (tuc_push_front (list "fill" (make_area_callback 2) (make_inter_callback (lambda () (change_current_tool "fill") )) ))
+    (tuc_push_front (list "bg_red" (make_area_callback 3) (make_inter_callback (lambda () (set_current_color COLOR_BUTTON_BG_RED) )) ))
+    (tuc_push_front (list "red" (make_area_callback 4) (make_inter_callback (lambda () (set_current_color COLOR_BUTTON_RED) )) ))
+    (tuc_push_front (list "pink" (make_area_callback 5) (make_inter_callback (lambda () (set_current_color COLOR_BUTTON_PINK) )) ))
+    (tuc_push_front (list "purple" (make_area_callback 6) (make_inter_callback (lambda () (set_current_color COLOR_BUTTON_PURPLE) )) ))
+    (tuc_push_front (list "blue" (make_area_callback 7) (make_inter_callback (lambda () (set_current_color COLOR_BUTTON_BLUE) )) ))
+    (tuc_push_front (list "cyan" (make_area_callback 8) (make_inter_callback (lambda () (set_current_color COLOR_BUTTON_CYAN) )) ))
+    (tuc_push_front (list "green" (make_area_callback 8) (make_inter_callback (lambda () (set_current_color COLOR_BUTTON_GREEN) )) ))
+    (tuc_push_front (list "yellow" (make_area_callback 8) (make_inter_callback (lambda () (set_current_color COLOR_BUTTON_YELLOW) )) ))
+    (tuc_push_front (list "orange" (make_area_callback 8) (make_inter_callback (lambda () (set_current_color COLOR_BUTTON_ORANGE) )) ))
+    (tuc_push_front (list "white" (make_area_callback 8) (make_inter_callback (lambda () (set_current_color COLOR_BUTTON_WHITE) )) ))
+    (tuc_push_front (list "grey" (make_area_callback 8) (make_inter_callback (lambda () (set_current_color COLOR_BUTTON_GREY) )) ))
+    (tuc_push_front (list "black" (make_area_callback 8) (make_inter_callback (lambda () (set_current_color COLOR_BUTTON_BLACK) )) ))
   )
 )
 
@@ -116,5 +144,17 @@
     (render_button stamp_icon_tex 0 (string=? (get_current_tool) "stamp"))
     (render_button brush_icon_tex 1 (string=? (get_current_tool) "brush"))
     (render_button fill_icon_tex 2 (string=? (get_current_tool) "fill"))
+    (render_color_button COLOR_BUTTON_BG_RED 3 (= (get_current_color) COLOR_BUTTON_BG_RED))
+    (render_color_button COLOR_BUTTON_RED 4 (= (get_current_color) COLOR_BUTTON_RED))
+    (render_color_button COLOR_BUTTON_PINK 5 (= (get_current_color) COLOR_BUTTON_PINK))
+    (render_color_button COLOR_BUTTON_PURPLE 6 (= (get_current_color) COLOR_BUTTON_PURPLE))
+    (render_color_button COLOR_BUTTON_BLUE 7 (= (get_current_color) COLOR_BUTTON_BLUE))
+    (render_color_button COLOR_BUTTON_CYAN 8 (= (get_current_color) COLOR_BUTTON_CYAN))
+    (render_color_button COLOR_BUTTON_GREEN 9 (= (get_current_color) COLOR_BUTTON_GREEN))
+    (render_color_button COLOR_BUTTON_YELLOW 10 (= (get_current_color) COLOR_BUTTON_YELLOW))
+    (render_color_button COLOR_BUTTON_ORANGE 11 (= (get_current_color) COLOR_BUTTON_ORANGE))
+    (render_color_button COLOR_BUTTON_WHITE 12 (= (get_current_color) COLOR_BUTTON_WHITE))
+    (render_color_button COLOR_BUTTON_GREY 13 (= (get_current_color) COLOR_BUTTON_GREY))
+    (render_color_button COLOR_BUTTON_BLACK 14 (= (get_current_color) COLOR_BUTTON_BLACK))
   )
 )
