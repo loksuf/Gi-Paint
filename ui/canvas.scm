@@ -36,6 +36,8 @@
 (define current_color (rgba_struct 255 0 0 255))
 (define canvas_pos_x 0)
 (define canvas_pos_y 0)
+(define canvas_offset_x 0)
+(define canvas_offset_y 0)
 (define canvas_width SCREEN_WIDTH)
 (define canvas_height SCREEN_HEIGHT)
 (define drawing_tool_radius 10.0)
@@ -65,6 +67,7 @@
 
 (define blocked_repeat_interact #f)
 (define brush_tail #f)
+(define mouse_prev_pos (list 0 0))
 
 ; Interact callbackget_mouse
 (define-public
@@ -73,8 +76,8 @@
     (
      (relative_hit_pos
        (cons 
-         (+ (car hit_pos) canvas_pos_x)
-         (- (cdr hit_pos) canvas_pos_y)
+         (- (+ (car hit_pos) ) canvas_pos_x)
+         (- (cdr hit_pos) canvas_pos_y )
          )
        )
      (rel_hit_pos_x (car relative_hit_pos))
@@ -135,10 +138,32 @@
              )
            )
           (
+            (= mouse_button_code MOUSE_BUTTON_MIDDLE)
+            (begin
+              (let
+                (
+                  (offset_x (- (car mouse_prev_pos) (get_mouse_x)))
+                  (offset_y (- (cdr mouse_prev_pos) (get_mouse_y)))
+                )
+                (set! canvas_pos_x 
+                  (- canvas_pos_x offset_x)
+                )
+                (set! canvas_pos_y
+                  (- canvas_pos_y offset_y)
+                )
+                (set! canvas_offset_x (- canvas_offset_x offset_x))
+                (set! canvas_offset_y (- canvas_offset_y offset_y))
+                (set! mouse_prev_pos (cons (get_mouse_x) (get_mouse_y)) )
+              )
+              ; for return : use minus
+            )
+          )
+          (
            (= mouse_button_code MOUSE_BUTTON_NONE)
            (begin
              (set! blocked_repeat_interact #f)
              (set! brush_tail #f)
+             (set! mouse_prev_pos (cons (get_mouse_x) (get_mouse_y)) )
              )
            )
           )

@@ -87,7 +87,24 @@
             (list MOUSE_BUTTON_LEFT)
           )
         )
-        (else ; SPAM!!!!! FIX IT!!!@#!@!@
+        (
+          (= (is_mouse_button_down MOUSE_BUTTON_MIDDLE) 1)
+          (if 
+            (not 
+              (panels_ui_interact
+                (cons mouse_pos_x mouse_pos_y)
+                "mouse"
+                (list MOUSE_BUTTON_MIDDLE)
+              )
+            )
+            (panels_ui_ghost_interact
+              "canvas"
+              "mouse"
+              (list MOUSE_BUTTON_MIDDLE)
+            )
+          )
+        )
+        (else ; Spam is okay (not because I'm too lazy to fix it, but simply because it's a good solution, probably... :p )
           (panels_ui_ghost_interact
             "canvas"
             "mouse"
