@@ -7,6 +7,7 @@
 (use-modules (colors))
 (use-modules (primitives))
 (use-modules (ui canvas))
+(use-modules (ui ui_core))
 
 ; - FUNCS
 
@@ -52,61 +53,30 @@
 
   ; Mouse interactions handler
   (begin 
-    (begin_drawing) ; PYRAMID OF DOOM :skull: :skull: :skull: :skull: :skull: :skull: 
-    (clear_background theme_background)
-    (cond
+    (let
       (
-        (= (is_mouse_button_down MOUSE_BUTTON_LEFT) 1)
-        (cond
-          (
-            (string=? current_tool "stamp")
-            (if 
-              stamp_switch
-              (begin
-                (set! stamp_switch #f)
-                 
-                (let
-                  (
-                    (blot (make_blot (get_mouse_x) (get_mouse_y) 15.8 (rgba_struct 255 0 0 255)))
-                  )
-                  (canvas_draw_abstract "blot" blot)
-                )
-              )
-            )
-          )
-          (
-            (string=? current_tool "brush")
-            (if
-              brush_tail
-              (let
-                (
-                  (blot (make_blot (get_mouse_x) (get_mouse_y) 15.8 (rgba_struct 255 0 0 255)))
-                )
-                (canvas_draw_abstract "stroke" (cons blot brush_tail))
-                (set! brush_tail (cons (blot_get_x blot) (blot_get_y blot)) )
-              )
-              (let
-                (
-                  (blot (make_blot (get_mouse_x) (get_mouse_y) 15.8 (rgba_struct 255 0 0 255)))
-                )
-                (canvas_draw_abstract "blot" blot)
-                (set! brush_tail (cons (blot_get_x blot) (blot_get_y blot)) )
-              )
-            )
-          )
-          (
-            (string=? current_tool "fill")
-            (canvas_draw_abstract "fill" (cons (get_mouse_x) (get_mouse_y) ) )
+        (mouse_pos_x (get_mouse_x))
+        (mouse_pos_y (get_mouse_y))
+      )
+      (begin_drawing)
+      (clear_background theme_background)
+      (cond
+        (
+          (= (is_mouse_button_down MOUSE_BUTTON_LEFT) 1)
+          (panels_ui_interact 
+            (cons mouse_pos_x mouse_pos_y)
+            "mouse"
+            (list MOUSE_BUTTON_LEFT)
           )
         )
+        (else
+          (set! stamp_switch #t)
+          (set! brush_tail #f)
+        )
       )
-      (else
-        (set! stamp_switch #t)
-        (set! brush_tail #f)
-      )
+      (canvas_render erase_mode)
+      (end_drawing)
     )
-    (canvas_render erase_mode)
-    (end_drawing)
   )
 )
 
@@ -127,6 +97,10 @@
     (init_window SCREEN_WIDTH SCREEN_HEIGHT (c_str "PAINT"))
     (set_target_fps FPS)
     (canvas_load)
+    (panels_ui_add_collider 
+      (cons (get_mouse_x) (get_mouse_y))
+      canvas_area_callback 
+      canvas_interact_callback)
     (start_render_loop)
   )
 )

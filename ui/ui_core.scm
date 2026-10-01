@@ -5,8 +5,8 @@
 (define panels_ui_collisions '())
 
 (define
-  (puc_push_front lst data)
-  (set! panels_ui_collisions (cons data lst))
+  (puc_push_front data)
+  (set! panels_ui_collisions (cons data panels_ui_collisions))
 )
 
 ; rect_callback == 
@@ -17,10 +17,10 @@
 ;   (list (x y) (x y) (x y) (x y)) ; all of corners (in future...)
 ;
 ; interaction_callback ==
-; (func) (hit_position_x_y_vec2_cons interaction_type data)
+; (func) (hit_position_x_y_vec2_cons interaction_type interaction_data)
 (define-public 
-  (ui_add_collider name rect_callback interaction_callback)
-  (list_push_front (list name rect_callback interaction_callback))
+  (panels_ui_add_collider name area_callback interaction_callback)
+  (puc_push_front (list name area_callback interaction_callback))
 )
 
 (define 
@@ -30,7 +30,7 @@
       (x (car from_pos_vec2))
       (y (cdr from_pos_vec2))
       (corner0_vec2 (car area))
-      (corner3_vec2 (cdr area))
+      (corner3_vec2 (cadr area))
       (x1 (car corner0_vec2))
       (y1 (cdr corner0_vec2))
       (x3 (car corner3_vec2))

@@ -16,6 +16,8 @@
 ; } RenderTexture2D;
 (define canvas_render_texture #f)
 
+
+
 ; Canvas loader
 (define-public
   (canvas_load)
@@ -29,9 +31,37 @@
   )
 )
 
-; ===== PAINT CONTROLS DATA
+; ===== CANVAS CONTROLS DATA
 
 (define current_color (rgba_struct 255 0 0 255))
+(define canvas_pos_x 0)
+(define canvas_pos_y 0)
+(define canvas_width SCREEN_WIDTH)
+(define canvas_height SCREEN_HEIGHT)
+
+; Area callback
+(define-public
+  (canvas_area_callback)
+  (list
+    (cons 
+      canvas_pos_x
+      canvas_pos_y
+    )
+    (cons
+      (+ canvas_pos_x canvas_width)
+      (+ canvas_pos_y canvas_height)
+    )
+  )
+)
+
+; Interact callback
+(define-public
+  (canvas_interact_callback hit_pos interaction_type interaction_data)
+  (if
+    (string=? interaction_type "mouse")
+    (display 123)
+  )
+)
 
 ; ===== CANVAS PRIMITIVES
 
@@ -182,8 +212,8 @@
 
     (draw_texture_pro
       (get_canvas_texture canvas_render_texture)
-      (make_c_rectangle 0 0 SCREEN_WIDTH (- SCREEN_HEIGHT))
-      (make_c_rectangle 0 0 SCREEN_WIDTH SCREEN_HEIGHT)
+      (make_c_rectangle 0 0 canvas_width (- canvas_height))
+      (make_c_rectangle canvas_pos_x canvas_pos_y canvas_width canvas_height)
       (make_c_vector2 0 0)
       0.0
       canvas_background
