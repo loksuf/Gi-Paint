@@ -2,6 +2,8 @@
   (consts) ; Module name
 )
 
+(define-public APP_NAME "Gi-Paint")
+
 ; - CONSTS
 
 (define-public FPS 60)

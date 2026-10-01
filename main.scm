@@ -150,7 +150,7 @@
 ; ENTRY
 (define (main)
   (begin
-    (init_window SCREEN_WIDTH SCREEN_HEIGHT (c_str "PAINT"))
+    (init_window SCREEN_WIDTH SCREEN_HEIGHT (c_str APP_NAME))
     (set_target_fps FPS)
     (canvas_load)
     (toolbar_load)
