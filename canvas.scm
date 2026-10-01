@@ -31,6 +31,7 @@
 
 ; ===== PAINT CONTROLS DATA
 
+(define current_color (rgba_struct 255 0 0 255))
 
 ; ===== CANVAS PRIMITIVES
 
@@ -67,6 +68,42 @@
   (list_push_front reverse_queue (cons draw_type data))
 )
 
+(define (fluid_fill_rec_ image x y color max_x max_y)
+  (if
+    (and
+      (< y max_y)
+      (>= y 0)
+      (< x max_x)
+      (>= x 0)
+    )
+    (let
+      (
+        (cur_pixel_color (get_image_color image x y))
+      )
+      (if
+        (not (= cur_pixel_color color))
+        (begin
+          (image_draw_pixel image x y color)
+          (fluid_fill_rec_ image (+ x 1) y color max_x max_y)
+          (fluid_fill_rec_ image (- x 1) y color max_x max_y)
+          (fluid_fill_rec_ image x (+ y 1) color max_x max_y)
+          (fluid_fill_rec_ image x (- y 1) color max_x max_y)
+        )
+      )
+    )
+  )
+)
+
+(define
+  (fluid_fill image x y color)
+  (let
+    (
+      (image_size_vec2 (get_size_of_image image))
+    )
+    (fluid_fill_rec_ image x y color (car image_size_vec2) (cdr image_size_vec2))
+  )
+)
+
 (define (draw_all_in_queue)
   (if
     (not (null? reverse_queue))
@@ -97,14 +134,26 @@
                   (get_canvas_texture canvas_render_texture)
                 )
               )
+              (pixel_x
+                (car (cdr (car reverse_queue)))
+              )
+              (pixel_y
+                (cdr (cdr (car reverse_queue)))
+              )
             )
             (let
               (
                 (color
-                  (get_image_color image 1 1)
+                  (get_image_color image pixel_x pixel_y)
                 )
               )
-              (display 123)
+              (if
+                (not (= color current_color))
+                (begin
+                  (fluid_fill image pixel_x pixel_y current_color)
+                  (update_texture (get_canvas_texture canvas_render_texture) (get_image_data_ptr image))
+                )
+              )
             )
           )
         )

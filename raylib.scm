@@ -259,6 +259,15 @@
   )
 )
 
+; RLAPI void UpdateTexture(Texture2D texture, const void *pixels);
+(define-public update_texture
+  (pointer->procedure
+    void
+    (dynamic-func "UpdateTexture" raylib_so)
+    (list c_texture2d '*)
+  )
+)
+
 ; IMAGE ========
 
 ; RLAPI Image LoadImageFromTexture(Texture2D texture);
@@ -276,6 +285,36 @@
     c_color
     (dynamic-func "GetImageColor" raylib_so)
     (list c_image int int)
+  )
+)
+
+; RLAPI void ImageDrawPixel(Image *dst, int posX, int posY, Color color);
+(define-public image_draw_pixel
+  (pointer->procedure
+    void
+    (dynamic-func "ImageDrawPixel" raylib_so)
+    (list '* int int c_color)
+  )
+)
+
+; get_image_data_ptr
+(define-public 
+  (get_image_data_ptr image)
+  (car (parse-c-struct image c_image))
+)
+
+; get_size_of_image
+(define-public 
+  (get_size_of_image image)
+  (let* 
+    (
+      (parsed_struct
+        (parse-c-struct image c_image)
+      )
+      (width (cadr parsed_struct))
+      (height (caddr parsed_struct))
+    )
+    (cons width height)
   )
 )
 
