@@ -76,6 +76,13 @@
   )
 )
 
+; Utils ====
+
+(define-public
+  (c_str str)
+  (string->pointer str "UTF-8")
+)
+
 ; FUNCTIONS ================
 
 ; void InitWindow(int width, int height, const char *title)
@@ -115,6 +122,15 @@
 )
 
 ; DRAW =============
+
+; RLAPI void DrawRectangle(int posX, int posY, int width, int height, Color color);
+(define-public draw_rectangle
+  (pointer->procedure
+    void
+    (dynamic-func "DrawRectangle" raylib_so)
+    (list int int int int c_color)
+  )
+)
 
 ; RLAPI void BeginBlendMode(int mode);
 (define-public begin_blend_mode
@@ -223,6 +239,15 @@
 
 ; TEXTURE ============
 
+; RLAPI Texture2D LoadTexture(const char *fileName);
+(define-public load_texture
+  (pointer->procedure
+    c_render_texture2d
+    (dynamic-func "LoadTexture" raylib_so)
+    (list '*)
+  )
+)
+
 ; RLAPI RenderTexture2D LoadRenderTexture(int width, int height); 
 (define-public load_render_texture
   (pointer->procedure
@@ -265,6 +290,21 @@
     void
     (dynamic-func "UpdateTexture" raylib_so)
     (list c_texture2d '*)
+  )
+)
+
+(define-public 
+  (load_texture_from_file filepath)
+  (load_texture (c_str filepath))
+)
+
+(define-public
+  (get_canvas_texture canvas_render_texture)
+  (make-c-struct
+    c_texture2d
+    (cadr 
+      (parse-c-struct canvas_render_texture c_render_texture2d)
+    )
   )
 )
 
@@ -318,19 +358,3 @@
   )
 )
 
-; Utils ====
-
-(define-public
-  (c_str str)
-  (string->pointer str "UTF-8")
-)
-
-(define-public
-  (get_canvas_texture canvas_render_texture)
-  (make-c-struct
-    c_texture2d
-    (cadr 
-      (parse-c-struct canvas_render_texture c_render_texture2d)
-    )
-  )
-)

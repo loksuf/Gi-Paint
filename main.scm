@@ -8,6 +8,7 @@
 (use-modules (primitives))
 (use-modules (ui canvas))
 (use-modules (ui ui_core))
+(use-modules (ui toolbar))
 
 ; - FUNCS
 
@@ -113,6 +114,7 @@
         )
       )
       (canvas_render erase_mode)
+      (toolbar_render)
       (end_drawing)
     )
   )
@@ -135,6 +137,7 @@
     (init_window SCREEN_WIDTH SCREEN_HEIGHT (c_str "PAINT"))
     (set_target_fps FPS)
     (canvas_load)
+    (toolbar_load)
     (panels_ui_add_collider 
       "canvas"
       canvas_area_callback 

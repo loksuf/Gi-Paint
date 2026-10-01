@@ -7,6 +7,7 @@
 (define-public FPS 60)
 (define-public SCREEN_WIDTH 800)
 (define-public SCREEN_HEIGHT 700)
+(define-public TOOLBAR_WIDTH 40)
 
 ; Mouse input
 
@@ -24,3 +25,10 @@
 ; Blend mode
 
 (define-public ERASE_BLEND_MODE 6)
+
+; Paths
+
+(define-public BASE_DIR (dirname (current-filename)))
+(define-public ICON_BRUSH_PATH (string-append BASE_DIR "/res/brush.png"))
+; (define-public ICON_BRUSH_FILL (string-append BASE_DIR ""))
+; (define-public ICON_BRUSH_STAMP (string-append BASE_DIR ""))
