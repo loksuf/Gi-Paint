@@ -17,7 +17,9 @@
 
 ; Keycodes (check KeyboardKey in raylib.h)
 
+(define-public KEY_B 66)
 (define-public KEY_E 69)
+(define-public KEY_F 70)
 
 ; Blend mode
 

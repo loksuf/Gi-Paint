@@ -25,6 +25,8 @@
 (define erase_mode #f)
 
 (define key_e_blocker #f)
+(define key_f_blocker #f)
+(define key_b_blocker #f)
 
 ; Render frame
 (define (render_frame)
@@ -42,6 +44,28 @@
         )
       )
       (set! key_e_blocker #f)
+    )
+    (if
+      (= (is_key_pressed KEY_F) 1)
+      (if
+        (not key_f_blocker)
+        (begin
+          (change_current_tool "fill")
+          (set! key_f_blocker #t)
+        )
+      )
+      (set! key_f_blocker #f)
+    )
+    (if
+      (= (is_key_pressed KEY_B) 1)
+      (if
+        (not key_b_blocker)
+        (begin
+          (change_current_tool "brush")
+          (set! key_b_blocker #t)
+        )
+      )
+      (set! key_b_blocker #f)
     )
   )
 

@@ -34,15 +34,19 @@
 ; ===== CANVAS CONTROLS DATA
 
 (define current_color (rgba_struct 255 0 0 255))
-(define canvas_pos_x 50)
-(define canvas_pos_y 50)
-(define canvas_width (- SCREEN_WIDTH 100))
-(define canvas_height (- SCREEN_HEIGHT 100))
+(define canvas_pos_x 0)
+(define canvas_pos_y 0)
+(define canvas_width SCREEN_WIDTH)
+(define canvas_height SCREEN_HEIGHT)
 (define drawing_tool_radius 10.0)
 
-; (define current_tool "stamp")
-; (define current_tool "brush")
-(define current_tool "fill")
+(define current_tool "brush")
+
+; Change current_tool
+(define-public
+  (change_current_tool new_tool_name)
+  (set! current_tool new_tool_name)
+)
 
 ; Area callback
 (define-public
@@ -62,20 +66,21 @@
 (define blocked_repeat_interact #f)
 (define brush_tail #f)
 
-; Interact callback
+; Interact callbackget_mouse
 (define-public
   (canvas_interact_callback hit_pos interaction_type interaction_data)
   (let*
     (
      (relative_hit_pos
        (cons 
-         (- (car hit_pos) canvas_pos_x)
-         (+ (cdr hit_pos) canvas_pos_y)
+         (+ (car hit_pos) canvas_pos_x)
+         (- (cdr hit_pos) canvas_pos_y)
          )
        )
      (rel_hit_pos_x (car relative_hit_pos))
      (rel_hit_pos_y (cdr relative_hit_pos))
      )
+
     (if
       (string=? interaction_type "mouse")
       (let
@@ -92,10 +97,12 @@
                 (not blocked_repeat_interact)
                 (let
                   (
+                   
                    (blot (make_blot rel_hit_pos_x rel_hit_pos_y drawing_tool_radius current_color))
                    )
                   (canvas_draw_abstract "blot" blot)
                   (set! blocked_repeat_interact #t)
+
                   )
                 )
               )
@@ -109,7 +116,9 @@
                    )
                   (canvas_draw_abstract "stroke" (cons blot brush_tail))
                   (set! brush_tail (cons (blot_get_x blot) (blot_get_y blot)) )
+
                   )
+                
                 (let
                   (
                    (blot (make_blot rel_hit_pos_x rel_hit_pos_y drawing_tool_radius current_color))
@@ -205,7 +214,7 @@
     (
       (image_size_vec2 (get_size_of_image image))
     )
-    (fluid_fill_rec_ image x y color (car image_size_vec2) (cdr image_size_vec2))
+    (fluid_fill_rec_ image x (- (cdr image_size_vec2) y) color (car image_size_vec2) (cdr image_size_vec2))
   )
 )
 
