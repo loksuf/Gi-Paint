@@ -82,3 +82,40 @@
   (panels_ui_interact from_pos_vec2 interaction_type interaction_data)
   (ui_interact from_pos_vec2 interaction_type interaction_data panels_ui_collisions)
 )
+
+; find_collider_by_name
+(define-public
+  (find_collider_by_name collisions_list target_name)
+  (if
+    (null? collisions_list)
+    #f
+    (let*
+      (
+        (collider (car collisions_list))
+        (collider_name (car collider))
+      )
+      (if
+        (string=? collider_name target_name)
+        collider
+        (find_collider_by_name (cdr collisions_list) target_name)
+      )
+    )
+  )
+)
+
+(define-public
+  (panels_ui_ghost_interact panel_name interaction_type interaction_data)
+  (let
+    (
+      (collider (find_collider_by_name panels_ui_collisions panel_name))
+    )
+    (if
+      collider
+      (begin
+        ((caddr collider) (cons -1 -1) interaction_type interaction_data)
+        #t
+      )
+      #f
+    )
+  )
+)

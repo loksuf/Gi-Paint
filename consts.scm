@@ -10,6 +10,7 @@
 
 ; Mouse input
 
+(define-public MOUSE_BUTTON_NONE -1)
 (define-public MOUSE_BUTTON_LEFT 0)
 (define-public MOUSE_BUTTON_RIGHT 1)
 (define-public MOUSE_BUTTON_MIDDLE 2)

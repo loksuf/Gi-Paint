@@ -34,10 +34,15 @@
 ; ===== CANVAS CONTROLS DATA
 
 (define current_color (rgba_struct 255 0 0 255))
-(define canvas_pos_x 0)
-(define canvas_pos_y 0)
-(define canvas_width SCREEN_WIDTH)
-(define canvas_height SCREEN_HEIGHT)
+(define canvas_pos_x 50)
+(define canvas_pos_y 50)
+(define canvas_width (- SCREEN_WIDTH 100))
+(define canvas_height (- SCREEN_HEIGHT 100))
+(define drawing_tool_radius 10.0)
+
+(define current_tool "stamp")
+; (define current_tool "brush")
+; (define current_tool "fill")
 
 ; Area callback
 (define-public
@@ -54,12 +59,56 @@
   )
 )
 
+(define blocked_repeat_interact #f)
+
 ; Interact callback
 (define-public
   (canvas_interact_callback hit_pos interaction_type interaction_data)
-  (if
-    (string=? interaction_type "mouse")
-    (display 123)
+  (let*
+    (
+      (relative_hit_pos
+        (cons 
+          (- (car hit_pos) canvas_pos_x)
+          (+ (cdr hit_pos) canvas_pos_y)
+        )
+      )
+      (rel_hit_pos_x (car relative_hit_pos))
+      (rel_hit_pos_y (cdr relative_hit_pos))
+    )
+    (if
+      (string=? interaction_type "mouse")
+      (let
+        (
+         (mouse_button_code (car interaction_data))
+         )
+        (cond
+          (
+            (= mouse_button_code MOUSE_BUTTON_LEFT)
+            (cond
+              (
+                (string=? current_tool "stamp")
+                (if
+                  (not blocked_repeat_interact)
+                  (let
+                    (
+                      (blot (make_blot rel_hit_pos_x rel_hit_pos_y drawing_tool_radius current_color))
+                    )
+                    (canvas_draw_abstract "blot" blot)
+                    (set! blocked_repeat_interact #t)
+                  )
+                )
+              )
+            )
+           )
+          (
+           (= mouse_button_code MOUSE_BUTTON_NONE)
+           (begin
+             (set! blocked_repeat_interact #f)
+             )
+          )
+        )
+      )
+    )
   )
 )
 

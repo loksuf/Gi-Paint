@@ -22,12 +22,6 @@
   )
 )
 
-; (define current_tool "stamp")
-(define current_tool "brush")
-; (define current_tool "fill")
-
-(define brush_tail #f)
-(define stamp_switch #t)
 (define erase_mode #t)
 
 (define key_e_blocker #f)
@@ -69,9 +63,12 @@
             (list MOUSE_BUTTON_LEFT)
           )
         )
-        (else
-          (set! stamp_switch #t)
-          (set! brush_tail #f)
+        (else ; SPAM!!!!! FIX IT!!!@#!@!@
+          (panels_ui_ghost_interact
+            "canvas"
+            "mouse"
+            (list MOUSE_BUTTON_NONE)
+          )
         )
       )
       (canvas_render erase_mode)
@@ -98,7 +95,7 @@
     (set_target_fps FPS)
     (canvas_load)
     (panels_ui_add_collider 
-      (cons (get_mouse_x) (get_mouse_y))
+      "canvas"
       canvas_area_callback 
       canvas_interact_callback)
     (start_render_loop)
