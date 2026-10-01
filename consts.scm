@@ -24,6 +24,8 @@
 (define-public KEY_E 69)
 (define-public KEY_F 70)
 (define-public KEY_S 83)
+(define-public KEY_V 86)
+(define-public KEY_LEFT_SHIFT 340)
 
 ; Blend mode
 

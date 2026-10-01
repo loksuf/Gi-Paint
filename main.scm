@@ -28,6 +28,10 @@
 (define key_f_blocker #f)
 (define key_b_blocker #f)
 (define key_s_blocker #f)
+(define key_lshift_blocker #f)
+
+(define mouse_prev_pos (cons 0 0))
+(define resizing_begin -1)
 
 ; Render frame
 (define (render_frame)
@@ -78,6 +82,20 @@
         )
       )
       (set! key_s_blocker #f)
+    ) ; And then I realized that is_key_pressed is called for only a single frame, even if the button is held down...
+    (if
+      (= (is_key_pressed KEY_LEFT_SHIFT) 1)
+      (set! resizing_begin (get_mouse_x)) 
+    )
+    (if
+      (= (is_key_released KEY_LEFT_SHIFT) 1)
+      (if
+        (> resizing_begin -1)
+        (begin
+          (set_drawing_tool_radius (+ (get_drawing_tool_radius) (- (get_mouse_x) resizing_begin)))
+          (set! resizing_begin -1)
+        )
+      )
     )
   )
 
@@ -88,6 +106,7 @@
         (mouse_pos_x (get_mouse_x))
         (mouse_pos_y (get_mouse_y))
       )
+      (set! mouse_prev_pos (cons mouse_pos_x mouse_pos_y))
       (begin_drawing)
       (clear_background theme_background)
       (cond

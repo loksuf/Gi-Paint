@@ -237,6 +237,15 @@
   )
 )
 
+;RLAPI bool IsKeyReleased(int key);
+(define-public is_key_released
+  (pointer->procedure
+    bool
+    (dynamic-func "IsKeyReleased" raylib_so)
+    (list int) ; (check KeyboardKey in raylib.h)
+  )
+)
+
 ; TEXTURE ============
 
 ; RLAPI Texture2D LoadTexture(const char *fileName);

@@ -44,6 +44,18 @@
 
 (define current_tool "brush")
 
+; Set drawing_tool_radius
+(define-public
+  (set_drawing_tool_radius radius)
+  (set! drawing_tool_radius radius)
+)
+
+; Get drawing_tool_radius
+(define-public
+  (get_drawing_tool_radius)
+  drawing_tool_radius
+)
+
 ; Set current_color
 (define-public
   (set_current_color rgba)
