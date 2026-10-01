@@ -6,7 +6,7 @@
 (use-modules (consts))
 (use-modules (colors))
 (use-modules (primitives))
-(use-modules (canvas))
+(use-modules (ui canvas))
 
 ; - FUNCS
 
@@ -22,8 +22,8 @@
 )
 
 ; (define current_tool "stamp")
-; (define current_tool "brush")
-(define current_tool "fill")
+(define current_tool "brush")
+; (define current_tool "fill")
 
 (define brush_tail #f)
 (define stamp_switch #t)

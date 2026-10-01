@@ -1,5 +1,5 @@
 (define-module
-  (canvas) ; Module name
+  (ui canvas) ; Module name
 )
 
 (add-to-load-path (dirname (current-filename)))
