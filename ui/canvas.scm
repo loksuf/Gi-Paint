@@ -50,6 +50,12 @@
   (set! current_tool new_tool_name)
 )
 
+; Get current_tool
+(define-public
+  (get_current_tool)
+  current_tool
+)
+
 ; Area callback
 (define-public
   (canvas_area_callback)

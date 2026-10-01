@@ -21,6 +21,7 @@
 (define-public KEY_B 66)
 (define-public KEY_E 69)
 (define-public KEY_F 70)
+(define-public KEY_S 83)
 
 ; Blend mode
 
@@ -30,5 +31,5 @@
 
 (define-public BASE_DIR (dirname (current-filename)))
 (define-public ICON_BRUSH_PATH (string-append BASE_DIR "/res/brush.png"))
-; (define-public ICON_BRUSH_FILL (string-append BASE_DIR ""))
-; (define-public ICON_BRUSH_STAMP (string-append BASE_DIR ""))
+(define-public ICON_STAMP_PATH (string-append BASE_DIR "/res/stamp.png"))
+(define-public ICON_FILL_PATH (string-append BASE_DIR "/res/fill.png"))

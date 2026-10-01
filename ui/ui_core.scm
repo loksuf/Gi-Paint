@@ -13,7 +13,7 @@
 ; (func)
 ;         left top and right bottom corners
 ;   (list (x y) (x y)) 
-;     or
+;     or    cons
 ;   (list (x y) (x y) (x y) (x y)) ; all of corners (in future...)
 ;
 ; interaction_callback ==

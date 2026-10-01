@@ -28,6 +28,7 @@
 (define key_e_blocker #f)
 (define key_f_blocker #f)
 (define key_b_blocker #f)
+(define key_s_blocker #f)
 
 ; Render frame
 (define (render_frame)
@@ -67,6 +68,17 @@
         )
       )
       (set! key_b_blocker #f)
+    )
+    (if
+      (= (is_key_pressed KEY_S) 1)
+      (if
+        (not key_s_blocker)
+        (begin
+          (change_current_tool "stamp")
+          (set! key_s_blocker #t)
+        )
+      )
+      (set! key_s_blocker #f)
     )
   )
 
@@ -142,6 +154,10 @@
       "canvas"
       canvas_area_callback 
       canvas_interact_callback)
+    (panels_ui_add_collider 
+      "toolbar"
+      toolbar_area_callback 
+      toolbar_interact_callback)
     (start_render_loop)
   )
 )
