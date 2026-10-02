@@ -21,6 +21,21 @@
   - `F` — Fill
   - `S` — Stamp
 
+## 📦 Dependencies
+
+Install these dependencies before running:
+- Raylib _(`sudo pacman -S raylib`)_
+- Guile _(`sudo pacman -S guile`)_
+
+## 🚀 Run
+
+_Ensure that all dependencies from the "Dependencies" section are installed_
+
+```sh
+cd Gi-Paint
+chmod +x main.scm
+./main.scm
+```
 
 <details>
 <summary><b> ⚠️ Open issues</b></summary>
@@ -30,3 +45,4 @@
 - Buttons trigger not only on click, but also on hover while held down
 
 </details>
+
