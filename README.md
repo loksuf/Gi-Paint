@@ -16,6 +16,7 @@
 ## 🎛️ Controls
 - **Resize Brush:** Hold `LeftShift` + Drag cursor left/right
 - **Pan Canvas:** Hold `Middle Click` + Drag
+- **Toggle Erase Mode:** Press `E`
 - **Tool Shortcuts:**
   - `B` — Brush
   - `F` — Fill
